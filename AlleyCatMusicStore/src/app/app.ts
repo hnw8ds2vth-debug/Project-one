@@ -2,10 +2,12 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Album } from './entities';
 import { ApiResponse } from './shared/types';
+import { HeaderComponent } from './widgets/header/header.component';
+import { FooterComponent } from './widgets/footer/footer.component';
 
 @Component({
   selector: 'alley-cat-music-store-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

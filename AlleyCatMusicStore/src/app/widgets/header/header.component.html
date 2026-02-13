@@ -1,0 +1,39 @@
+<header class="header" role="banner">
+  <a routerLink="/" class="logo" aria-label="Alley Cat Music Store - Home">
+    <span class="logo-icon" aria-hidden="true">
+      <span class="logo-icon__outer"></span>
+      <span class="logo-icon__inner"></span>
+    </span>
+    <span class="logo-text">Alley Cat Music Store</span>
+  </a>
+
+  <nav class="nav" aria-label="Main navigation">
+    @for (link of navLinks; track link.route) {
+      <a [routerLink]="link.route" class="nav-link" routerLinkActive="nav-link--active">
+        {{ link.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="actions" role="group" aria-label="User actions">
+    <button type="button" class="action-btn" aria-label="Search">
+      <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.35-4.35"/>
+      </svg>
+    </button>
+    <button type="button" class="action-btn" aria-label="Profile">
+      <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </button>
+    <button type="button" class="action-btn" aria-label="Shopping cart">
+      <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+        <path d="M3 6h18"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+    </button>
+  </div>
+</header>

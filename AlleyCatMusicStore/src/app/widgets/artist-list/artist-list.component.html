@@ -1,0 +1,62 @@
+<section class="artist-list" aria-labelledby="artist-list-title">
+  <h2 id="artist-list-title" class="artist-list__title">Артисты</h2>
+
+  @if (state$ | async; as state) {
+    @switch (state.status) {
+      @case ('success') {
+        <ul class="artist-list__grid" role="list">
+          @for (artist of state.artists; track artist.id) {
+        <li class="artist-card" (click)="selectArtist(artist.id)" role="button" tabindex="0">
+          <div class="artist-card__image-wrap">
+            @if (artist.imageUrl) {
+              <img [src]="artist.imageUrl" [alt]="artist.name" class="artist-card__image" />
+            } @else {
+              <div class="artist-card__placeholder" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </div>
+            }
+          </div>
+          <div class="artist-card__body">
+            <h3 class="artist-card__name">{{ artist.name }}</h3>
+            @if (artist.country) {
+              <p class="artist-card__meta">{{ artist.country }}</p>
+            }
+            @if (artist.genres && artist.genres.length) {
+              <div class="artist-card__genres">
+                @for (genre of artist.genres; track genre) {
+                  <span class="artist-card__genre">{{ genre }}</span>
+                }
+              </div>
+            }
+          </div>
+        </li>
+          }
+        </ul>
+      }
+      @case ('loading') {
+        <div class="artist-list__loading" aria-busy="true">Загрузка артистов…</div>
+      }
+      @case ('error') {
+        <div class="artist-list__error">{{ state.message }}</div>
+      }
+    }
+  }
+
+  @if (selectedArtistId(); as artistId) {
+    <div class="artist-list__albums" id="artist-albums-section" #albumsSection>
+      <h2 class="artist-list__albums-title">Альбомы {{ getArtistName(artistId) }}</h2>
+      @if (albums$ | async; as albums) {
+        <ul class="artist-list__albums-grid">
+          @for (album of albums; track album.id) {
+            <li class="album-card">
+              <a [routerLink]="['/albums', album.slug]">{{ album.title }}</a>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  }
+</section>

@@ -1,0 +1,10 @@
+{
+  "name": "project-one",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npm start --prefix AlleyCatMusicStoreServer",
+    "start:server": "npm start --prefix AlleyCatMusicStoreServer",
+    "start:app": "npm start --prefix AlleyCatMusicStore"
+  }
+}

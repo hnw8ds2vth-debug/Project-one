@@ -1,0 +1,38 @@
+@if (album$ | async; as album) {
+  <article class="album-page">
+    <a [routerLink]="['/']" [queryParams]="{artist: album.artistId}" class="album-page__back">← Назад</a>
+
+    <div class="album-page__layout">
+      <div class="album-page__cover-wrap">
+        @if (album.coverImageUrl) {
+          <img [src]="album.coverImageUrl" [alt]="album.title" class="album-page__cover" />
+        } @else {
+          <div class="album-page__cover-placeholder" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </div>
+        }
+      </div>
+
+      <div class="album-page__info">
+        <h1 class="album-page__title">{{ album.title }}</h1>
+        @if (album.artist) {
+          <p class="album-page__artist">{{ album.artist.name }}</p>
+        }
+        @if (album.description) {
+          <p class="album-page__desc">{{ album.description }}</p>
+        }
+        @if (album.label) {
+          <p class="album-page__meta">Лейбл: {{ album.label }}</p>
+        }
+        @if (album.releaseDate) {
+          <p class="album-page__meta">Год: {{ album.releaseDate | date : 'yyyy' }}</p>
+        }
+      </div>
+    </div>
+  </article>
+} @else {
+  <p class="album-page__not-found">Альбом не найден</p>
+}
