@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, catchError, of } from 'rxjs';
 
 import { API_BASE_URL } from '../api.config';
 import type { Artist } from '../../entities';
@@ -27,6 +27,20 @@ export class ArtistApiService {
     return this.http
       .get<ApiResponse<Artist[]>>(this.baseUrl)
       .pipe(map((res) => res.data));
+  }
+
+  /**
+   * Получить артиста по ID.
+   * GET /api/artists/:artistId
+   */
+  getArtistById$(artistId: string): Observable<Artist | null> {
+    const url = `${this.baseUrl}/${encodeURIComponent(artistId)}`;
+    return this.http
+      .get<ApiResponse<Artist>>(url)
+      .pipe(
+        map((res) => res.data ?? null),
+        catchError(() => of(null))
+      );
   }
 }
 

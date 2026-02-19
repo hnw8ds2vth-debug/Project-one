@@ -65,6 +65,28 @@ app.get('/api/artists', (req, res) => {
 });
 
 /**
+ * GET /api/artists/:artistId
+ * Возвращает одного артиста по ID.
+ * Ответ: ApiResponse<Artist>
+ */
+app.get('/api/artists/:artistId', (req, res) => {
+  try {
+    const { artistId } = req.params;
+    const { artists } = getData();
+
+    const artist = artists.find((a) => a.id === artistId);
+    if (!artist) {
+      return sendError(res, 404, 'Artist not found', 'ARTIST_NOT_FOUND');
+    }
+
+    res.json(ok(artist));
+  } catch (err) {
+    console.error('[GET /api/artists/:artistId]', err);
+    sendError(res, 500, err.message || 'Internal server error', 'SERVER_ERROR');
+  }
+});
+
+/**
  * GET /api/artists/:artistId/albums
  * Возвращает список альбомов для указанного артиста.
  * Ответ: ApiResponse<Album[]>

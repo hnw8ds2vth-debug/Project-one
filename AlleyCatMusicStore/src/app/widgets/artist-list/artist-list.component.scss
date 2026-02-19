@@ -21,6 +21,12 @@
   padding: 0;
 }
 
+.artist-card__link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
 .artist-card {
   /* Liquid glass / glassmorphism */
   background: rgba(45, 45, 45, 0.35);
@@ -114,35 +120,4 @@
 
 .artist-card {
   cursor: pointer;
-}
-
-.artist-list__albums {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: rgba(45, 45, 45, 0.3);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.artist-list__albums-title {
-  margin: 0 0 1rem;
-  font-size: 1.25rem;
-  color: white;
-}
-
-.artist-list__albums-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.album-card a {
-  color: #ec4899;
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
 }

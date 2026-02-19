@@ -1,10 +1,8 @@
-import { Component, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { ArtistApiService } from '../../application/artists/artist-api.service';
-import { AlbumApiService } from '../../application/albums/album-api.service';
-import { catchError, map, of, startWith, switchMap } from 'rxjs';
+import { catchError, map, of, startWith } from 'rxjs';
 import type { Artist } from '../../entities';
 
 type ArtistListState =
@@ -19,54 +17,11 @@ type ArtistListState =
   templateUrl: './artist-list.component.html',
   styleUrl: './artist-list.component.scss',
 })
-export class ArtistListComponent implements OnInit {
+export class ArtistListComponent {
   protected readonly artistApi = inject(ArtistApiService);
-  protected readonly albumApi = inject(AlbumApiService);
-  private readonly route = inject(ActivatedRoute);
-
-  protected readonly selectedArtistId = signal<string | null>(null);
-  private artistsMap: Map<string, string> = new Map();
-
-  private readonly albumsSection = viewChild<ElementRef<HTMLElement>>('albumsSection');
-
-  ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      const artistId = params['artist'];
-      if (artistId) {
-        this.selectedArtistId.set(artistId);
-        setTimeout(() => {
-          this.albumsSection()?.nativeElement?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-          });
-        }, 150);
-      }
-    });
-  }
-
-  protected selectArtist(artistId: string) {
-    this.selectedArtistId.set(artistId);
-    setTimeout(() => {
-      this.albumsSection()?.nativeElement?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    }, 50);
-  }
-
-  protected getArtistName(artistId: string): string {
-    return this.artistsMap.get(artistId) ?? '';
-  }
-
-  protected readonly albums$ = toObservable(this.selectedArtistId).pipe(
-    switchMap((id) => (id ? this.albumApi.getAlbumsByArtist$(id) : of([])))
-  );
 
   protected readonly state$ = this.artistApi.getArtists$().pipe(
-    map((artists) => {
-      this.artistsMap = new Map(artists.map((a) => [a.id, a.name]));
-      return { status: 'success' as const, artists };
-    }),
+    map((artists) => ({ status: 'success' as const, artists })),
     startWith({ status: 'loading' } as ArtistListState),
     catchError((err) => {
       const msg =

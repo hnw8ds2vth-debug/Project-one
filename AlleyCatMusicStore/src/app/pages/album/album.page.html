@@ -1,6 +1,6 @@
 @if (album$ | async; as album) {
   <article class="album-page">
-    <a [routerLink]="['/']" [queryParams]="{artist: album.artistId}" class="album-page__back">← Назад</a>
+    <a [routerLink]="['/', album.artistId]" class="album-page__back">← Назад</a>
 
     <div class="album-page__layout">
       <div class="album-page__cover-wrap">

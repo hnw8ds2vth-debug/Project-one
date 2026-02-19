@@ -1,0 +1,52 @@
+@if (artist$ | async; as artist) {
+  <article class="artist-page">
+    <a routerLink="/" class="artist-page__back">← Назад</a>
+
+    <div class="artist-page__layout">
+      <div class="artist-page__cover-wrap">
+        @if (artist.imageUrl) {
+          <img [src]="artist.imageUrl" [alt]="artist.name" class="artist-page__cover" />
+        } @else {
+          <div class="artist-page__cover-placeholder" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </div>
+        }
+      </div>
+
+      <div class="artist-page__info">
+        <h1 class="artist-page__title">{{ artist.name }}</h1>
+        @if (artist.country) {
+          <p class="artist-page__meta">{{ artist.country }}</p>
+        }
+        @if (artist.bio) {
+          <p class="artist-page__desc">{{ artist.bio }}</p>
+        }
+        @if (artist.genres && artist.genres.length) {
+          <div class="artist-page__genres">
+            @for (genre of artist.genres; track genre) {
+              <span class="artist-page__genre">{{ genre }}</span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <section class="artist-page__albums" aria-labelledby="artist-albums-title">
+      <h2 id="artist-albums-title" class="artist-page__albums-title">Альбомы</h2>
+      @if (albums$ | async; as albums) {
+        <ul class="artist-page__albums-grid">
+          @for (album of albums; track album.id) {
+            <li class="artist-page__album-card">
+              <a [routerLink]="['/albums', album.slug]">{{ album.title }}</a>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+  </article>
+} @else {
+  <p class="artist-page__not-found">Артист не найден</p>
+}
